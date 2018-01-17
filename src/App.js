@@ -9,12 +9,14 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Note from './Note/Note';
+import NoteForm from './NoteForm/NoteForm';
 import './App.css';
 
-class App extends Component {
+class App extends Component{
 
-  constructor(props) {
+  constructor(props){
     super(props);
+    this.addNote=this.addNote.bind(this);
 
     // We're going to state the React state of our component
     this.state ={
@@ -24,6 +26,18 @@ class App extends Component {
         { id:2, noteContent: "Note 2 here" }
       ],
     }
+  }
+
+  addNote(note) {
+    //Push the note onto the notes array
+    const previousNote = this.state.notes;
+    previousNote.push({ id: previousNote.length + 1, 
+                        noteContent: note});
+
+    this.setState({
+      notes: previousNote
+    })
+    
   }
 
   // render() method returns a html component here.
@@ -40,14 +54,16 @@ class App extends Component {
           // We are going to map the notes array here
           this.state.notes.map((note) => {
             return (
-              <Note noteContent={note.noteContent} noteId={note.id} key={note.id} />
+              <Note noteContent={note.noteContent} 
+                    noteId={note.id} 
+                    key={note.id} />
             )
           })
           
         }
         </div>
         <div className="notesFooter">
-          Footer will go here...
+          <NoteForm addNote={this.addNote} />
         </div>
       </div>
     );
