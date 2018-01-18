@@ -13,7 +13,7 @@ class NoteForm extends Component{
         //Can't setState for undefined.
         //So to get rid off that bind the handleUserInput method.
         this.handleUserInput = this.handleUserInput.bind(this);
-        this.writeNote = this.writeNote(this);
+        this.writeNote = this.writeNote.bind(this);
     }
 
     // When the user input changes, set the newContent 
