@@ -7,7 +7,7 @@ body {
   min-height:100%;
   background: 
     /*linear-gradient(-45deg, rgba(245, 242, 242, 0.3), rgba(0, 40, 105, 0.8)),*/
-    url('./Static/img/6.jpg');
+    url('./Static/img/7.jpg');
   background-attachment: fixed;
   background-size: cover; 
 }
@@ -32,9 +32,9 @@ body {
   flex: 1 1 5%;
   min-height: 2.5em;
   max-height: 2em;
-  font-size: 3.0em;
+  font-size: 2.8em;
   color: rgb(243, 209, 157);
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Robota', cursive;
   text-align: center;
   align-content: center;
   padding:20px 0px 20px 0px;
@@ -57,5 +57,6 @@ body {
 .notesFooter {
   display: flex;
   flex: 1 1 5%;
+  align-content: center;
   background-color: rgba(0,0,0,0.5);
 }

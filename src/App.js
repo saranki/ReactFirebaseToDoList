@@ -15,25 +15,23 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import './App.css';
 
-class App extends Component{
+class App extends Component {
 
   constructor(props){
     super(props);
     this.addNote=this.addNote.bind(this);
+    this.removeNote = this.removeNote.bind(this);
 
     this.app = firebase.initializeApp(DB_CONFIG);
 
     //Make reference to a DB in firebase
     //Inside 'notes' ref child we'll have the notes we'll be pushing
-    this.db = this.app.database().ref().child('notes');
+    this.database = this.app.database().ref().child('notes');
 
     // We're going to state the React state of our component
-    this.state ={
+    this.state = {
       //We'll have notes and keys here(map method)
-      notes: [
-        // { id:1, noteContent: "Note 1 here" },
-        // { id:2, noteContent: "Note 2 here" }
-      ],
+      notes: [],
     }
   }
 
@@ -43,7 +41,7 @@ class App extends Component{
 
     // Whenever we read data from firebase we receive data in a form called 
     // 'Datasnapshot'. This is passed to our event callbacks
-    this.database.on( 'chile_added', snap => {
+    this.database.on( 'child_added', snap => {
       previousNotes.push({
         id: snap.key,
         noteContent: snap.val().noteContent,
@@ -54,8 +52,25 @@ class App extends Component{
         notes: previousNotes
       })
     })
+
+    this.database.on( 'child_removed', snap => {
+        for(var i=0; i<previousNotes.length; i++){
+          if(previousNotes[i].id === snap.key){
+
+            //get the note which has the id same as the id returned from
+            //the firebase(snap.key) and remove it
+            //in splice method i-> the id of the note, 1-> no of notes we want to remove
+            previousNotes.splice(i, 1);
+          }
+        }
+
+        this.setState({
+          notes: previousNotes
+        })
+      })
   }
 
+  // Add note
   addNote(note) {
     // //Push the note onto the notes array
     // const previousNotes = this.state.notes;
@@ -67,6 +82,12 @@ class App extends Component{
     // })
     
     this.database.push().set({ noteContent: note});
+  }
+
+  // Remove note
+  removeNote(noteId){
+    console.log("from the parent" + noteId);
+    this.database.child(noteId).remove();
   }
 
   // render() method returns a html component here.
@@ -85,7 +106,8 @@ class App extends Component{
             return (
               <Note noteContent={note.noteContent} 
                     noteId={note.id} 
-                    key={note.id} />
+                    key={note.id} 
+                    removeNote ={this.removeNote} />
             )
           })
           
